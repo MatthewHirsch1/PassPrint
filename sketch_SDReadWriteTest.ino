@@ -1,24 +1,9 @@
-/*
- SD card read/write
-
- This example shows how to read and write data to and from an SD card file
- The circuit:
- * SD card attached to SPI bus as follows:
- ** MOSI - pin 11
- ** MISO - pin 12
- ** CLK - pin 13
- ** CS - pin 4 (for MKRZero SD: SDCARD_SS_PIN)
-
- created   Nov 2010
- by David A. Mellis
- modified 9 Apr 2012
- by Tom Igoe
-
- This example code is in the public domain.
-
- */
- 
-/* Pins for SD card reader on Arduino Mega
+/* SD Card Read/Write Test Sketch
+ * PassPrint - Senior Design Project
+ * by Matthew Hirsch
+ * 2/18/19 
+ * 
+ * Pins for SD card reader on Arduino Mega 2560:
  * CS - pin 47
  * SCK - pin 52
  * MOSI - pin 51
