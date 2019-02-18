@@ -1,5 +1,5 @@
 /*
-  SD card read/write
+ SD card read/write
 
  This example shows how to read and write data to and from an SD card file
  The circuit:
@@ -17,119 +17,107 @@
  This example code is in the public domain.
 
  */
-
+ 
+/* Pins for SD card reader on Arduino Mega
+ * CS - pin 47
+ * SCK - pin 52
+ * MOSI - pin 51
+ * MISO - pin 50
+ */
 #include <SPI.h>
 #include <SD.h>
 
-File myFile;
-
+File myFile; // Define myFile as a File type object
+String testFile = "test.txt"; // Define test file name as a global String
 
 void setup() {
-  // Open serial communications and wait for port to open:
-  Serial.begin(9600);
-  while (!Serial) {
-    ; // wait for serial port to connect. Needed for native USB port only
-  }
+  Serial.begin(9600); // Open serial communications and wait for port to open:
+  while (!Serial) { ; } // Wait for serial port to connect. Needed for native USB port only
 
-
-  Serial.print("Initializing SD card...");
-
-  if (!SD.begin(47)) {
-    Serial.println("initialization failed!");
+  Serial.print("Initializing SD card..."); // Provide feedback on initialization
+  if (!SD.begin(47)) { // If CS pin is not connected to pin 47
+    Serial.println("Initialization failed!");
     while (1);
   }
-  Serial.println("initialization done.");
+  Serial.println("Initialization done.");
 
+  Serial.println("Removing " + testFile);
+  SD.remove(testFile); // Remove file each time so file contents are controlled
 
-  Serial.println("Removing test.txt");
-  SD.remove("test.txt");
+  addOneCredential(testFile, "gmail.com", "bob123@gmail.com", "123");
+  addOneCredential(testFile, "yahoo.com", "bob123@yahoo.com", "456");  
+  addOneCredential(testFile, "outlook.com", "bob123@outlook.com", "321");
 
-  // open the file. note that only one file can be open at a time,
-  // so you have to close this one before opening another.
-  myFile = SD.open("test.txt", FILE_WRITE);
+  readContents(testFile);
 
-  // if the file opened okay, write to it:
-  if (myFile) {
-    Serial.print("Writing to test.txt...");
-    myFile.println("gmail.com, bob123@gmail.com, 123456");
-    myFile.println("yahoo.com, bob123@yahoo.com, 123456"); 
-    // Add user credentials to SD card database (Encrypt it Sprint 3)
-    // close the file:
-    myFile.close();
-    Serial.println("done.");
-  } else {
-    // if the file didn't open, print an error:
-    Serial.println("error opening test.txt");
-  }
-
-  readContents("test.txt");
-
-  // if the file opened okay, write to it:
-  myFile = SD.open("test.txt");
-  if (myFile) {
-    Serial.print("Writing to test.txt...");
-    myFile.println("yahoo.com, bob123@yahoo.com, 123456"); 
-    // Add user credentials to SD card database (Encrypt it Sprint 3)
-    // close the file:
-    myFile.close();
-    Serial.println("done.");
-  } else {
-    // if the file didn't open, print an error:
-    Serial.println("error opening test.txt");
-  }
+  addOneCredential(testFile, "aol.com", "bob123@aol.com", "789");
   
-  readContents("test.txt");
+  readContents(testFile);
 
-
-  Serial.println("testing one cred retrieval...");
-  retrieveOneCred("test.txt","yahoo.com");
+  //Serial.println("\nTesting one credential retrieval from " + testFile + "...");
+  retrieveOneCredential(testFile,"yahoo.com");
 }
 
-void loop() {
-  // nothing happens after setup  
-}
+void loop() {} // Nothing done in loop
 
-void readContents(String file) {
-  // re-open the file for reading: ADDED MORE CREDENTIALS
-  myFile = SD.open(file);
+// Read the whole contents of the file
+void readContents(String fileName) {
+  myFile = SD.open(fileName); // Open the file for reading
   if (myFile) {
-    Serial.println(file + ":");
-
-    // read from the file until there's nothing else in it:
-    while (myFile.available()) {
-      Serial.write(myFile.read());
-    }
-    // close the file:
-    myFile.close();
-  } else {
-    // if the file didn't open, print an error:
-    Serial.println("error opening " + file);
+    Serial.println("\nContents of " + fileName + ":");
+    
+    // Read bytes from the file until there's nothing left
+    while (myFile.available()) { Serial.write(myFile.read()); }
+    
+    myFile.close(); // Close the file
+  } else { // If the file didn't open, print an error
+    Serial.println("Error opening " + fileName);
   }
 }  
 
-// Retrieve one set of credentials from the SD card database
-// file is the file on the SD card where the credentials are stored
-// siteName is the website name listed with the credentials in the file
-void retrieveOneCred(String file, String siteName) {
-  myFile = SD.open(file);
+// Retrieve one set of credentials from the SD card database.
+// 'fileName' is the file name on the SD card where the credentials are stored.
+// 'siteName' is the website name listed with the credentials in the file.
+void retrieveOneCredential(String fileName, String siteName) {
+  myFile = SD.open(fileName); // Open the file for reading
   if (myFile) {
-    //Serial.println(file + ":");
-
-    // read from the file until there's nothing else in it:
-    while (myFile.available() && myFile.peek() != 10) {// peek returns the next character without incrementing the read index
-      int cred = myFile.read();
-      //Serial.write(myFile.read());
-      Serial.write(cred);
+    Serial.println("\nRetrieving the credential for " + siteName + " from " + fileName + ":");
+    // Initialize Strings to hold website name, username, and password
+    String site;
+    String uname;
+    String pwd;
+    while (myFile.available() && !site.equals(siteName)) { // Find credential for desired website
+      site = myFile.readStringUntil(',');
+      site.trim();
     }
-    // close the file:
-    myFile.close();
-  } else {
-    // if the file didn't open, print an error:
-    Serial.println("error opening " + file);
-  }
-
-
-
-
+    if (myFile.available()) { // Read the username and password for the desired website
+      uname = myFile.readStringUntil(',');
+      uname.trim();
+      pwd = myFile.readStringUntil(',');
+      pwd.trim();
+    }
+    Serial.println(site);
+    Serial.println(uname);
+    Serial.println(pwd);
   
+    myFile.close(); // Close the file
+  } else { // If the file didn't open, print an error
+    Serial.println("Error opening " + fileName);
+  }
+}
+ 
+// Adds one credential (website, username, and password) to the database
+void addOneCredential(String fileName, String siteName, String uname, String pwd) {
+  myFile = SD.open(testFile, FILE_WRITE); // Open the file for writing
+  if (myFile) {
+    Serial.print("Writing to " + testFile + "...");
+    
+    // Add user credentials to SD card database (Encrypt it Sprint 3)
+    myFile.println(siteName + ", " + uname + ", " + pwd + ",");
+    
+    myFile.close(); // Close the file
+    Serial.println("done.");
+  } else { // If the file didn't open, print an error
+    Serial.println("Error opening " + testFile);
+  }
 }
