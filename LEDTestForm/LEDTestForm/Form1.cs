@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -22,6 +22,7 @@ namespace LEDTestForm
         private void button1_Click(object sender, EventArgs e)
         {
             serialPort1.Write("a");
+            serialPort1.Write("ask.com,bob123@ask.com,12345pass");
             String incData = serialPort1.ReadLine();
             MessageBox.Show(incData, "Test Response from BT");
         }
@@ -29,8 +30,10 @@ namespace LEDTestForm
         private void button2_Click(object sender, EventArgs e)
         {
             serialPort1.Write("b");
+            serialPort1.Write("yes.com,bob123@yes.com,54321pass");
             String incData = serialPort1.ReadLine();
             MessageBox.Show(incData, "Test Response from BT");
         }
     }
 }
+
