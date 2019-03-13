@@ -1,0 +1,14 @@
+c:\users\matthew\source\repos\LEDTestForm\LEDTestForm\bin\Debug\LEDTestForm.exe.config
+c:\users\matthew\source\repos\LEDTestForm\LEDTestForm\bin\Debug\LEDTestForm.exe
+c:\users\matthew\source\repos\LEDTestForm\LEDTestForm\bin\Debug\LEDTestForm.pdb
+c:\users\matthew\source\repos\LEDTestForm\LEDTestForm\obj\Debug\LEDTestForm.csprojAssemblyReference.cache
+c:\users\matthew\source\repos\LEDTestForm\LEDTestForm\obj\Debug\LEDTestForm.Form1.resources
+c:\users\matthew\source\repos\LEDTestForm\LEDTestForm\obj\Debug\LEDTestForm.Properties.Resources.resources
+c:\users\matthew\source\repos\LEDTestForm\LEDTestForm\obj\Debug\LEDTestForm.csproj.GenerateResource.cache
+c:\users\matthew\source\repos\LEDTestForm\LEDTestForm\obj\Debug\LEDTestForm.csproj.CoreCompileInputs.cache
+c:\users\matthew\source\repos\LEDTestForm\LEDTestForm\obj\Debug\LEDTestForm.exe
+c:\users\matthew\source\repos\LEDTestForm\LEDTestForm\obj\Debug\LEDTestForm.pdb
+C:\Users\Matthew\source\repos\LEDTestForm\LEDTestForm\bin\Debug\LEDTestForm.exe.manifest
+C:\Users\Matthew\source\repos\LEDTestForm\LEDTestForm\bin\Debug\LEDTestForm.application
+C:\Users\Matthew\source\repos\LEDTestForm\LEDTestForm\obj\Debug\LEDTestForm.exe.manifest
+C:\Users\Matthew\source\repos\LEDTestForm\LEDTestForm\obj\Debug\LEDTestForm.application
