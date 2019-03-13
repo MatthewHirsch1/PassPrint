@@ -10,12 +10,16 @@ void loop() {
   if (Serial.available()) {
     int data = Serial.read();
     if (data == 'a') { 
-      digitalWrite(LED, HIGH); 
-      Serial.write("Hello from Arduino! LED is on.\n");
+      digitalWrite(LED, HIGH);
+      String incData = Serial.readString();
+      String outgoingData = "This is BT. You sent me: " + incData + "\n";
+      Serial.print(outgoingData);
     }
     if (data == 'b') { 
       digitalWrite(LED, LOW);
-      Serial.write("Hello from Arduino! LED is off.\n");
+      String incData = Serial.readString();
+      String outgoingData = "This is BT. You sent me: " + incData;
+      Serial.println(outgoingData);
     }
   }
 }
